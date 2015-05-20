@@ -9,7 +9,7 @@ default['cassandra']['cluster_name'] = nil
 default['cassandra']['notify_restart'] = false
 default['cassandra']['setup_jamm'] = false
 default['cassandra']['initial_token'] = ''
-default['cassandra']['service_name'] = 'cassandra'
+default['cassandra']['service_name'] = 'cassandra'jm
 default['cassandra']['user'] = 'cassandra'
 default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
@@ -130,7 +130,7 @@ default['cassandra']['vnodes'] = false
 default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
-default['cassandra']['jmx_server_hostname'] = false
+default['cassandra']['jmx_server_hostname'] = node[:opsworks][:instance][:id]
 default['cassandra']['metrics_reporter']['enabled'] = false
 default['cassandra']['metrics_reporter']['name'] = 'metrics-graphite'
 default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/remotecontent?filepath=com/yammer/metrics/metrics-graphite/2.2.0/metrics-graphite-2.2.0.jar'
