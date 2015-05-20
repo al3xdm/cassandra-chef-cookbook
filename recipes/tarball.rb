@@ -55,7 +55,7 @@ if !node['cassandra']['jbod']['slices'].nil?
   end
 else
   data_dir << ::File.join(node['cassandra']['root_dir'], 'data')
-en
+end
 node.default['cassandra']['data_dir'] = data_dir
 
 # 1. Validate node['cassandra']['cluster_name
