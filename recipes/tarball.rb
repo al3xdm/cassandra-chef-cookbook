@@ -57,14 +57,14 @@ end
 node.default['cassandra']['data_dir'] = data_dir
 
  
-<%
 instances = node[:opsworks][:layers][:cassandra][:instances]
 instances = {:localhost => {:private_ip => "127.0.0.1"}} if instances.empty?
--%>
-hosts:
-<% instances.each_pair do |name, instance| -%>
-  - "<%= instance["ip"] %>"
-<% end -%>
+
+hosts = []
+
+instances.each_pair do |name, instance| 
+  hosts << instance["ip"]
+end
 
 node.default['cassandra']['seeds'] = hosts
 
