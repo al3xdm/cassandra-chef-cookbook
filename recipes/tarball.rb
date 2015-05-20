@@ -55,18 +55,18 @@ else
   data_dir << ::File.join(node['cassandra']['root_dir'], 'data')
 end
 node.default['cassandra']['data_dir'] = data_dir
-
  
-instances = node[:opsworks][:layers][:cassandra][:instances]
-instances = {:localhost => {:private_ip => "127.0.0.1"}} if instances.empty?
+seed_array = []
 
-hosts = []
+# Add this node as the first seed
+seed_array << node["opsworks"]["instance"]["ip"]
 
-instances.each_pair do |name, instance| 
-  hosts << instance["ip"]
+node["opsworks"]["layers"]["cassandra"]["instances"].each do |instance_name, values|
+  # If using the multi-region snitch, we must use the public IP address
+    seed_array << values["ip"]
 end
 
-node.default['cassandra']['seeds'] = hosts
+node.default['cassandra']['seeds'] = seed_array
 
 # 1. Validate node['cassandra']['cluster_name
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
