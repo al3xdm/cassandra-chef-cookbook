@@ -31,6 +31,8 @@
   node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 
+
+
 node.default['cassandra']['source_dir'] = '/usr/local/apache-cassandra-' + node['cassandra']['version']
 
 node.default['cassandra']['installation_dir'] = '/usr/local/cassandra'
@@ -46,7 +48,15 @@ node.default['cassandra']['data_dir'] = ::File.join(node['cassandra']['root_dir'
 node.default['cassandra']['commitlog_dir'] = ::File.join(node['cassandra']['root_dir'], 'commitlog')
 node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['root_dir'], 'saved_caches')
 
-include_recipe 'java' if node['cassandra']['install_java']
+data_dir = []
+if !node['cassandra']['jbod']['slices'].nil?
+  node['cassandra']['jbod']['slices'].times do |slice_number|
+    data_dir << ::File.join(node['cassandra']['root_dir'], "#{node['cassandra']['jbod']['dir_name_prefix']}#{slice_number}")
+  end
+else
+  data_dir << ::File.join(node['cassandra']['root_dir'], 'data')
+en
+node.default['cassandra']['data_dir'] = data_dir
 
 # 1. Validate node['cassandra']['cluster_name
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
