@@ -21,6 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'cassandra::datastax'
+
 node.default['cassandra']['source_dir'] = '/usr/local/apache-cassandra-' + node['cassandra']['version']
 
 node.default['cassandra']['installation_dir'] = '/usr/local/cassandra'
