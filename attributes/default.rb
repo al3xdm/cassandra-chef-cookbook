@@ -130,7 +130,7 @@ default['cassandra']['vnodes'] = false
 default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
-default['cassandra']['jmx_server_hostname'] = node[:opsworks][:instance][:ip]
+default['cassandra']['jmx_server_hostname'] = node['opsworks']['instance']['ip']
 default['cassandra']['metrics_reporter']['enabled'] = false
 default['cassandra']['metrics_reporter']['name'] = 'metrics-graphite'
 default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/remotecontent?filepath=com/yammer/metrics/metrics-graphite/2.2.0/metrics-graphite-2.2.0.jar'
