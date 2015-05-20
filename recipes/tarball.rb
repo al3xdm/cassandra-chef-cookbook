@@ -31,8 +31,6 @@
   node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 
-
-
 node.default['cassandra']['source_dir'] = '/usr/local/apache-cassandra-' + node['cassandra']['version']
 
 node.default['cassandra']['installation_dir'] = '/usr/local/cassandra'
@@ -57,6 +55,18 @@ else
   data_dir << ::File.join(node['cassandra']['root_dir'], 'data')
 end
 node.default['cassandra']['data_dir'] = data_dir
+
+ 
+<%
+instances = node[:opsworks][:layers][:cassandra][:instances]
+instances = {:localhost => {:private_ip => "127.0.0.1"}} if instances.empty?
+-%>
+hosts:
+<% instances.each_pair do |name, instance| -%>
+  - "<%= instance["ip"] %>"
+<% end -%>
+
+node.default['cassandra']['seeds'] = hosts
 
 # 1. Validate node['cassandra']['cluster_name
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
